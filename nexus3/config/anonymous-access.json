@@ -1,5 +1,0 @@
-{
-	"name": "anonymous-access",
-	"type": "groovy",
-	"content": "security.setAnonymousAccess(Boolean.valueOf(args))"
-}
