@@ -42,7 +42,7 @@ ARG KUSTOMIZE_VERSION=v5.0.1
 
 RUN apk add --update --no-cache curl ca-certificates bash bash-completion git direnv wget net-tools tcpdump iputils nmap arp-scan bind-tools jq yq gettext
 
-COPY --from=go-tools /usr/local/bin/k3d  /usr/local/bin/helm /usr/local/bin/flux /usr/local/bin/argocd  /usr/local/bin/
+COPY --from=go-tools /usr/local/bin/helm /usr/local/bin/flux /usr/local/bin/argocd  /usr/local/bin/
 COPY --from=go-tools /go/bin/crane /go/bin/cosign /go/bin/ko  /usr/local/bin/
 
 # kubectl
