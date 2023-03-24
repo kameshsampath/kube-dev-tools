@@ -10,7 +10,7 @@
 # This template uses one generic job with conditional builds
 # for the default branch and all other (MR) branches.
 variables:
-  BUILDER: 
+  BUILDER_NAME: 
     value: buildx-mutliarch
     description: The docker buildx builder name
 
@@ -33,12 +33,8 @@ docker-build:
         tag=":$CI_COMMIT_REF_SLUG"
         echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
       fi
-    - |
-      docker buildx inspect $BUILDER || docker buildx create --name=$BUILDER --driver=docker-container --driver-opt=network=host
-    - |
-      docker buildx build --builder=$BUILDER_NAME --push \
-        --platform=linux/arm64 --platform=linux/amd64 \
-        -t "$CI_REGISTRY_IMAGE${tag}" -f Dockerfile .
+    - docker buildx inspect $BUILDER_NAME || docker buildx create --name=$BUILDER_NAME --driver=docker-container --driver-opt=network=host
+    - docker buildx build --builder=$BUILDER_NAME --push --platform=linux/arm64 --platform=linux/amd64 -t "$CI_REGISTRY_IMAGE${tag}" -f Dockerfile .
   # Run this job in a branch where a Dockerfile exists
   rules:
     - if: $CI_COMMIT_BRANCH
