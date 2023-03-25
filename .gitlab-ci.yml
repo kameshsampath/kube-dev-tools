@@ -32,7 +32,8 @@ docker-build:
         tag=":$CI_COMMIT_REF_SLUG"
         echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
       fi
-    - docker buildx create --use
+    - docker context create builders
+    - docker buildx create builders --use
     - docker buildx build --push --platform=linux/arm64 --platform=linux/amd64 -t "$CI_REGISTRY_IMAGE${tag}" -f Dockerfile .
   # Run this job in a branch where a Dockerfile exists
   rules:
