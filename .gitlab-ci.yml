@@ -13,6 +13,7 @@ variables:
   BUILDER_NAME: 
     value: buildx-mutliarch
     description: The docker buildx builder name
+  DOCKER_TLS_CERTDIR: "/certs"
 
 docker-build:
   # Use the official docker image.
