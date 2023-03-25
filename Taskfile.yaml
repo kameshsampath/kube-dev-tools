@@ -11,6 +11,7 @@ vars:
   KO_VERSION: 0.13.0
   KUBECTL_VERSION: 1.24.12
   KUSTOMIZE_VERSION: 5.0.1
+  DOCKER_CREDENTIAL_GCR_VERSION: 2.1.7
 
 tasks:
   default:
@@ -49,6 +50,8 @@ tasks:
       - curl -sSL -o /tools/bin/cosign "https://github.com/sigstore/cosign/releases/download/v{{.COSIGN_VERSION}}/cosign-linux-arm64"
       # crane
       - curl -sSL "https://github.com/google/go-containerregistry/releases/download/v{{.CRANE_VERSION}}/go-containerregistry_Linux_arm64.tar.gz" -o - | tar zx -C /tools/bin/ crane
+      # Docker Credential GCR
+      - curl -sSL https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v{{.DOCKER_CREDENTIAL_GCR_VERSION}}/docker-credential-gcr_linux_arm64-{{.DOCKER_CREDENTIAL_GCR_VERSION}}.tar.gz -o - | tar zx -C /tools/bin/ docker-credential-gcr
       # flux
       - curl -sSL https://github.com/fluxcd/flux2/releases/download/v{{.FLUX_VERSION}}/flux_{{.FLUX_VERSION}}_linux_arm64.tar.gz -o - | tar zx -C /tools/bin/ flux
       # Helm
@@ -72,6 +75,8 @@ tasks:
       - curl -sSL -o /tools/bin/cosign "https://github.com/sigstore/cosign/releases/download/v{{.COSIGN_VERSION}}/cosign-linux-amd64"
       # crane
       - curl -sSL "https://github.com/google/go-containerregistry/releases/download/v{{.CRANE_VERSION}}/go-containerregistry_Linux_x86_64.tar.gz" -o - | tar zx -C /tools/bin/ crane
+      # Docker Credential GCR
+      - curl -sSL https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v{{.DOCKER_CREDENTIAL_GCR_VERSION}}/docker-credential-gcr_linux_amd64-{{.DOCKER_CREDENTIAL_GCR_VERSION}}.tar.gz -o - | tar zx -C /tools/bin/ docker-credential-gcr
       # flux
       - curl -sSL https://github.com/fluxcd/flux2/releases/download/v{{.FLUX_VERSION}}/flux_{{.FLUX_VERSION}}_linux_amd64.tar.gz -o - | tar zx -C /tools/bin/ flux
       # Helm
