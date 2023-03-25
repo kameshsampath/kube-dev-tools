@@ -13,6 +13,7 @@ variables:
   BUILDER_NAME: 
     value: buildx-mutliarch
     description: The docker buildx builder name
+  # needed for DinD
   DOCKER_TLS_CERTDIR: "/certs"
 
 docker-build:
@@ -34,8 +35,9 @@ docker-build:
         tag=":$CI_COMMIT_REF_SLUG"
         echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
       fi
-    - docker buildx inspect $BUILDER_NAME || docker buildx create --name=$BUILDER_NAME --driver=docker-container --driver-opt=network=host
-    - docker buildx build --builder=$BUILDER_NAME --push --platform=linux/arm64 --platform=linux/amd64 -t "$CI_REGISTRY_IMAGE${tag}" -f Dockerfile .
+    - docker context create builders
+    - docker buildx inspect $BUILDER_NAME || docker buildx create --name=$BUILDER_NAME --driver=docker-container --driver-opt=network=host builders
+    - docker buildx build --push --platform=linux/arm64 --platform=linux/amd64 -t "$CI_REGISTRY_IMAGE${tag}" -f Dockerfile .
   # Run this job in a branch where a Dockerfile exists
   rules:
     - if: $CI_COMMIT_BRANCH
