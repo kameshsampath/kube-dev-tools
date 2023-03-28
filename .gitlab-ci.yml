@@ -52,12 +52,12 @@ docker-build:
         tag=""
         echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
       else
-        tag=":$CI_COMMIT_REF_SLUG"
+        tag="${CI_COMMIT_REF_SLUG:1}"
         echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
       fi
     - docker context create builders
     - docker buildx create builders --use
-    - docker buildx build --push --platform=linux/arm64 --platform=linux/amd64 -t "$CI_REGISTRY_IMAGE${tag}" -f Dockerfile .
+    - docker buildx build --push --platform=linux/arm64 --platform=linux/amd64 -t "$CI_REGISTRY_IMAGE:${tag}" -f Dockerfile .
   # Run this job only when Dockerfile changes
   rules:
     - if: $CI_COMMIT_BRANCH
