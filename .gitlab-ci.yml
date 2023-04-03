@@ -43,7 +43,8 @@ docker-build:
   services:
     - docker:20.10.23-dind
   before_script:
-    - echo "$CI_REGISTRY_PASSWORD" |  docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" --password-stdin 
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" --password-stdin 
+    - echo "$DOCKER_HUB_PASSWORD" |  docker login  -u "$DOCKER_HUB_USERNAME" --password-stdin 
   # Default branch leaves tag empty (= latest tag)
   # All other branches are tagged with the escaped branch name (commit ref slug)
   script:
@@ -57,7 +58,11 @@ docker-build:
       fi
     - docker context create builders
     - docker buildx create builders --use
-    - docker buildx build --push --platform=linux/arm64 --platform=linux/amd64 -t "$CI_REGISTRY_IMAGE:${tag}" -f Dockerfile .
+    - |
+       docker buildx build --push --platform=linux/arm64 --platform=linux/amd64 \
+         -t "$CI_REGISTRY_IMAGE:${tag}" \
+         -t "docker.io/${DOCKER_HUB_USERNMAE}/${CI_PROJECT_NAME}:${tag}" \
+         -f Dockerfile .
   # Run this job only when Dockerfile changes
   rules:
     - if: $CI_COMMIT_BRANCH
