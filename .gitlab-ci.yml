@@ -1,3 +1,6 @@
+# Use the official docker image.
+image: docker:20.10.23-git
+
 # This file is a template, and might need editing before it works on your project.
 # To contribute improvements to CI/CD templates, please follow the Development guide at:
 # https://docs.gitlab.com/ee/development/cicd/templates.html
@@ -37,8 +40,6 @@ variables:
 docker-build:
   tags:
     - desktop
-  # Use the official docker image.
-  image: docker:20.10.23-git
   stage: build
   services:
     - docker:20.10.23-dind
@@ -50,10 +51,10 @@ docker-build:
   script:
     - |
       if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
-        tag=""
-        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
+        tag="latest"
+        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = '$tag'"
       else
-        tag="${CI_COMMIT_REF_SLUG:1}"
+        tag="${CI_COMMIT_REF_NAME:1}"
         echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
       fi
     - docker context create builders
@@ -69,3 +70,4 @@ docker-build:
     - if: $CI_COMMIT_BRANCH
       changes: 
        - Dockerfile
+       - .gitlab-ci.yml
