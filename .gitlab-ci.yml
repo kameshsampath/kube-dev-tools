@@ -62,7 +62,7 @@ docker-build:
     - |
        docker buildx build --push --platform=linux/arm64 --platform=linux/amd64 \
          -t "$CI_REGISTRY_IMAGE:${tag}" \
-         -t "docker.io/${DOCKER_HUB_USERNMAE}/${CI_PROJECT_NAME}:${tag}" \
+         -t "docker.io/${DOCKER_HUB_USERNAME}/${CI_PROJECT_NAME}:${tag}" \
          -f Dockerfile .
   # Run this job only when Dockerfile changes
   rules:
