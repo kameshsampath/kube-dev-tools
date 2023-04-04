@@ -12,6 +12,7 @@ vars:
   KUBECTL_VERSION: 1.24.12
   KUSTOMIZE_VERSION: 5.0.1
   DOCKER_CREDENTIAL_GCR_VERSION: 2.1.7
+  TERRAFORM_VERSION: 1.4.4
 
 tasks:
   default:
@@ -62,6 +63,11 @@ tasks:
       - curl -sSL https://storage.googleapis.com/kubernetes-release/release/v{{.KUBECTL_VERSION}}/bin/linux/arm64/kubectl -o /tools/bin/kubectl
       # kustomize
       - curl -sSL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv{{.KUSTOMIZE_VERSION}}/kustomize_v{{.KUSTOMIZE_VERSION}}_linux_arm64.tar.gz -o - | tar zx -C /tools/bin
+      # terraform
+      - |
+         curl -SSL https://releases.hashicorp.com/terraform/{{.TERRAFORM_VERSION}}/terraform_{{.TERRAFORM_VERSION}}_linux_arm64.zip -o terraform_{{.TERRAFORM_VERSION}}_linux_arm64.zip 
+         unzip -q -d /tools/bin terraform_{{.TERRAFORM_VERSION}}_linux_arm64.zip
+         rm -f terraform_{{.TERRAFORM_VERSION}}_linux_arm64.zip 
 
   downloads_amd64:
     silent: false
@@ -87,3 +93,8 @@ tasks:
       - curl -sSL https://storage.googleapis.com/kubernetes-release/release/v{{.KUBECTL_VERSION}}/bin/linux/amd64/kubectl -o /tools/bin/kubectl
       # kustomize
       - curl -sSL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv{{.KUSTOMIZE_VERSION}}/kustomize_v{{.KUSTOMIZE_VERSION}}_linux_amd64.tar.gz -o - | tar zx -C /tools/bin
+      # terraform
+      - |
+         curl -SSL https://releases.hashicorp.com/terraform/{{.TERRAFORM_VERSION}}/terraform_{{.TERRAFORM_VERSION}}_linux_amd64.zip -o terraform_{{.TERRAFORM_VERSION}}_linux_amd64.zip 
+         unzip -q -d /tools/bin terraform_{{.TERRAFORM_VERSION}}_linux_amd64.zip
+         rm -f terraform_{{.TERRAFORM_VERSION}}_linux_amd64.zip 
